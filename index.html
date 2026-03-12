@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Pendampingan Sekolah</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .pulse-dot { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .slide-in { animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .phase-indicator { position: relative; }
+        .phase-indicator::after { content: ''; position: absolute; top: 50%; left: 100%; width: 100%; height: 2px; background: linear-gradient(90deg, currentColor, transparent); }
+        .phase-indicator:last-child::after { display: none; }
+    </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full overflow-auto">
+  <div id="app" class="min-h-full gradient-bg text-white"><!-- Navigation -->
+   <nav class="glass sticky top-0 z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+     <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-xl">
+       📚
+      </div>
+      <div>
+       <h1 id="nav-title" class="font-bold text-lg">Portal Pendampingan</h1>
+       <p class="text-xs text-emerald-400">Potong Kompas Kelas • Co-Design</p>
+      </div>
+     </div>
+     <div class="flex items-center gap-4"><button id="btn-home" class="px-4 py-2 rounded-lg hover:bg-white/10 transition flex items-center gap-2"> <span>🏠</span> Beranda </button> <button id="btn-stats" class="px-4 py-2 rounded-lg hover:bg-white/10 transition flex items-center gap-2"> <span>📊</span> Statistik </button>
+     </div>
+    </div>
+   </nav><!-- Main Content -->
+   <main class="max-w-7xl mx-auto px-6 py-8"><!-- Home View -->
+    <div id="home-view"><!-- Welcome Section -->
+     <section class="mb-10 slide-in">
+      <div class="glass rounded-2xl p-8 relative overflow-hidden">
+       <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl"></div>
+       <div class="relative">
+        <h2 id="welcome-title" class="text-3xl font-bold mb-2">Selamat Datang, Pengawas! 👋</h2>
+        <p id="welcome-msg" class="text-gray-300 mb-6">Platform pendampingan berbasis Co-Design untuk transformasi pembelajaran yang mengutamakan suara murid.</p>
+        <div class="flex flex-wrap gap-4">
+         <div class="glass rounded-xl px-5 py-3 flex items-center gap-3"><span class="text-2xl">🏫</span>
+          <div>
+           <p class="text-2xl font-bold text-emerald-400">11</p>
+           <p class="text-xs text-gray-400">Sekolah Binaan</p>
+          </div>
+         </div>
+         <div class="glass rounded-xl px-5 py-3 flex items-center gap-3"><span class="text-2xl">📋</span>
+          <div>
+           <p class="text-2xl font-bold text-cyan-400" id="total-activities">0</p>
+           <p class="text-xs text-gray-400">Total Kegiatan</p>
+          </div>
+         </div>
+         <div class="glass rounded-xl px-5 py-3 flex items-center gap-3"><span class="text-2xl">🎯</span>
+          <div>
+           <p class="text-2xl font-bold text-amber-400" id="completed-count">0</p>
+           <p class="text-xs text-gray-400">Selesai</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section><!-- Co-Design Model Section -->
+     <section class="mb-10">
+      <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm">🔄</span> Model Potong Kompas Kelas • Co-Design</h3>
+      <div class="glass rounded-2xl p-6">
+       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="text-center p-4 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30">
+         <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mx-auto mb-3 text-xl">
+          1
+         </div>
+         <h4 class="font-bold text-blue-400 mb-1">Dengar</h4>
+         <p class="text-xs text-gray-400">Mendengarkan suara murid tentang pengalaman belajar</p>
+        </div>
+        <div class="text-center p-4 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border border-emerald-500/30">
+         <div class="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center mx-auto mb-3 text-xl">
+          2
+         </div>
+         <h4 class="font-bold text-emerald-400 mb-1">Rancang</h4>
+         <p class="text-xs text-gray-400">Merancang perbaikan bersama guru &amp; murid</p>
+        </div>
+        <div class="text-center p-4 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/20 border border-amber-500/30">
+         <div class="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center mx-auto mb-3 text-xl">
+          3
+         </div>
+         <h4 class="font-bold text-amber-400 mb-1">Laksana</h4>
+         <p class="text-xs text-gray-400">Melaksanakan pembelajaran yang telah dirancang</p>
+        </div>
+        <div class="text-center p-4 rounded-xl bg-gradient-to-br from-pink-500/20 to-pink-600/20 border border-pink-500/30">
+         <div class="w-12 h-12 rounded-full bg-pink-500 flex items-center justify-center mx-auto mb-3 text-xl">
+          4
+         </div>
+         <h4 class="font-bold text-pink-400 mb-1">Refleksi</h4>
+         <p class="text-xs text-gray-400">Mengevaluasi dan merefleksikan hasil bersama</p>
+        </div>
+       </div>
+      </div>
+     </section><!-- Schools Grid -->
+     <section>
+      <div class="flex items-center justify-between mb-4">
+       <h3 class="text-xl font-bold flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-sm">🏫</span> Sekolah Binaan</h3>
+      </div>
+      <div id="schools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"><!-- Schools will be rendered here -->
+      </div>
+     </section>
+    </div><!-- School Detail View -->
+    <div id="school-view" class="hidden"><button id="btn-back" class="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition"> <span>←</span> Kembali ke Beranda </button>
+     <div id="school-header" class="glass rounded-2xl p-6 mb-6"><!-- School header will be rendered here -->
+     </div><!-- Tabs -->
+     <div class="flex gap-2 mb-6 overflow-x-auto pb-2"><button data-tab="activities" class="tab-btn px-4 py-2 rounded-lg bg-emerald-500 text-white font-medium transition">📋 Kegiatan</button> <button data-tab="kurikulum" class="tab-btn px-4 py-2 rounded-lg glass hover:bg-white/10 transition">📚 Kurikulum</button> <button data-tab="pembelajaran" class="tab-btn px-4 py-2 rounded-lg glass hover:bg-white/10 transition">📖 Pembelajaran</button> <button data-tab="penilaian" class="tab-btn px-4 py-2 rounded-lg glass hover:bg-white/10 transition">📝 Penilaian</button> <button data-tab="suara-murid" class="tab-btn px-4 py-2 rounded-lg glass hover:bg-white/10 transition">🎤 Suara Murid</button>
+     </div><!-- Tab Content -->
+     <div id="tab-content"><!-- Dynamic content -->
+     </div>
+    </div><!-- Stats View -->
+    <div id="stats-view" class="hidden">
+     <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><span>📊</span> Statistik Pendampingan</h3>
+     <div id="stats-content" class="grid grid-cols-1 md:grid-cols-2 gap-6"><!-- Stats will be rendered here -->
+     </div>
+    </div>
+   </main><!-- Add Activity Modal -->
+   <div id="modal-overlay" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="glass rounded-2xl p-6 w-full max-w-lg slide-in">
+     <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold" id="modal-title">Tambah Kegiatan</h3><button id="modal-close" class="w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center">✕</button>
+     </div>
+     <form id="activity-form" class="space-y-4"><input type="hidden" id="form-school-id"> <input type="hidden" id="form-activity-id">
+      <div><label class="block text-sm text-gray-400 mb-1">Jenis Kegiatan</label> <select id="form-type" class="w-full bg-white/10 rounded-lg px-4 py-3 border border-white/20 focus:border-emerald-500 outline-none"> <option value="kurikulum">📚 Kurikulum</option> <option value="pembelajaran">📖 Pembelajaran</option> <option value="penilaian">📝 Penilaian</option> <option value="suara-murid">🎤 Suara Murid</option> </select>
+      </div>
+      <div><label class="block text-sm text-gray-400 mb-1">Judul Kegiatan</label> <input type="text" id="form-title" required class="w-full bg-white/10 rounded-lg px-4 py-3 border border-white/20 focus:border-emerald-500 outline-none" placeholder="Masukkan judul kegiatan">
+      </div>
+      <div><label class="block text-sm text-gray-400 mb-1">Deskripsi</label> <textarea id="form-description" rows="3" class="w-full bg-white/10 rounded-lg px-4 py-3 border border-white/20 focus:border-emerald-500 outline-none" placeholder="Jelaskan detail kegiatan"></textarea>
+      </div>
+      <div><label class="block text-sm text-gray-400 mb-1">Suara Murid (Apa kata murid?)</label> <textarea id="form-student-voice" rows="2" class="w-full bg-white/10 rounded-lg px-4 py-3 border border-white/20 focus:border-emerald-500 outline-none" placeholder="Catat aspirasi atau masukan dari murid"></textarea>
+      </div>
+      <div><label class="block text-sm text-gray-400 mb-1">Fase Co-Design</label> <select id="form-phase" class="w-full bg-white/10 rounded-lg px-4 py-3 border border-white/20 focus:border-emerald-500 outline-none"> <option value="dengar">1. Dengar - Mendengarkan suara murid</option> <option value="rancang">2. Rancang - Merancang perbaikan</option> <option value="laksana">3. Laksana - Melaksanakan rancangan</option> <option value="refleksi">4. Refleksi - Evaluasi bersama</option> </select>
+      </div>
+      <div><label class="block text-sm text-gray-400 mb-1">Status</label> <select id="form-status" class="w-full bg-white/10 rounded-lg px-4 py-3 border border-white/20 focus:border-emerald-500 outline-none"> <option value="rencana">📅 Direncanakan</option> <option value="proses">🔄 Sedang Berjalan</option> <option value="selesai">✅ Selesai</option> </select>
+      </div>
+      <div class="flex gap-3 pt-4"><button type="button" id="btn-cancel" class="flex-1 px-4 py-3 rounded-lg glass hover:bg-white/10 transition">Batal</button> <button type="submit" id="btn-submit" class="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 font-medium hover:opacity-90 transition">Simpan</button>
+      </div>
+     </form>
+    </div>
+   </div><!-- Toast -->
+   <div id="toast" class="hidden fixed bottom-6 right-6 glass rounded-xl px-6 py-4 slide-in z-50">
+    <p id="toast-message"></p>
+   </div><!-- Loading Overlay -->
+   <div id="loading" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div class="glass rounded-xl px-8 py-6 flex items-center gap-4">
+     <div class="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div><span>Menyimpan...</span>
+    </div>
+   </div>
+  </div>
+  <script>
+        // Reference data for schools
+        const schoolsData = [
+            { id: 'school-1', name: 'SDN 01 Maju Bersama', level: 'SD', color: 'from-blue-500 to-blue-600', icon: '🏫' },
+            { id: 'school-2', name: 'SDN 02 Cerdas Mandiri', level: 'SD', color: 'from-emerald-500 to-emerald-600', icon: '🏫' },
+            { id: 'school-3', name: 'SDN 03 Harapan Bangsa', level: 'SD', color: 'from-purple-500 to-purple-600', icon: '🏫' },
+            { id: 'school-4', name: 'SMPN 01 Prestasi Gemilang', level: 'SMP', color: 'from-amber-500 to-amber-600', icon: '🎓' },
+            { id: 'school-5', name: 'SMPN 02 Karya Nyata', level: 'SMP', color: 'from-pink-500 to-pink-600', icon: '🎓' },
+            { id: 'school-6', name: 'SMPN 03 Tunas Mekar', level: 'SMP', color: 'from-cyan-500 to-cyan-600', icon: '🎓' },
+            { id: 'school-7', name: 'SMAN 01 Bintang Pelajar', level: 'SMA', color: 'from-red-500 to-red-600', icon: '🎒' },
+            { id: 'school-8', name: 'SMAN 02 Generasi Emas', level: 'SMA', color: 'from-indigo-500 to-indigo-600', icon: '🎒' },
+            { id: 'school-9', name: 'SMKN 01 Terampil Jaya', level: 'SMK', color: 'from-orange-500 to-orange-600', icon: '⚙️' },
+            { id: 'school-10', name: 'SMKN 02 Inovasi Kreatif', level: 'SMK', color: 'from-teal-500 to-teal-600', icon: '⚙️' },
+            { id: 'school-11', name: 'SLB Negeri Kasih Sayang', level: 'SLB', color: 'from-rose-500 to-rose-600', icon: '💝' }
+        ];
+
+        // Default config
+        const defaultConfig = {
+            portal_title: 'Portal Pendampingan',
+            welcome_message: 'Platform pendampingan berbasis Co-Design untuk transformasi pembelajaran yang mengutamakan suara murid.',
+            background_color: '#0f172a',
+            primary_color: '#10b981',
+            text_color: '#ffffff',
+            surface_color: 'rgba(255,255,255,0.05)',
+            accent_color: '#06b6d4'
+        };
+
+        // App state
+        let activities = [];
+        let currentSchool = null;
+        let currentTab = 'activities';
+        let isEditing = false;
+        let currentRecordCount = 0;
+
+        // DOM elements
+        const elements = {
+            homeView: document.getElementById('home-view'),
+            schoolView: document.getElementById('school-view'),
+            statsView: document.getElementById('stats-view'),
+            schoolsGrid: document.getElementById('schools-grid'),
+            schoolHeader: document.getElementById('school-header'),
+            tabContent: document.getElementById('tab-content'),
+            statsContent: document.getElementById('stats-content'),
+            modalOverlay: document.getElementById('modal-overlay'),
+            activityForm: document.getElementById('activity-form'),
+            toast: document.getElementById('toast'),
+            toastMessage: document.getElementById('toast-message'),
+            loading: document.getElementById('loading'),
+            totalActivities: document.getElementById('total-activities'),
+            completedCount: document.getElementById('completed-count'),
+            navTitle: document.getElementById('nav-title'),
+            welcomeTitle: document.getElementById('welcome-title'),
+            welcomeMsg: document.getElementById('welcome-msg')
+        };
+
+        // Initialize Element SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange: async (config) => {
+                    elements.navTitle.textContent = config.portal_title || defaultConfig.portal_title;
+                    elements.welcomeMsg.textContent = config.welcome_message || defaultConfig.welcome_message;
+                    
+                    document.documentElement.style.setProperty('--primary', config.primary_color || defaultConfig.primary_color);
+                    document.documentElement.style.setProperty('--text', config.text_color || defaultConfig.text_color);
+                },
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.primary_color || defaultConfig.primary_color,
+                            set: (value) => window.elementSdk.setConfig({ primary_color: value })
+                        },
+                        {
+                            get: () => config.accent_color || defaultConfig.accent_color,
+                            set: (value) => window.elementSdk.setConfig({ accent_color: value })
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: {
+                        get: () => config.font_family || 'Plus Jakarta Sans',
+                        set: (value) => window.elementSdk.setConfig({ font_family: value })
+                    },
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ['portal_title', config.portal_title || defaultConfig.portal_title],
+                    ['welcome_message', config.welcome_message || defaultConfig.welcome_message]
+                ])
+            });
+        }
+
+        // Data handler for Data SDK
+        const dataHandler = {
+            onDataChanged(data) {
+                activities = data;
+                currentRecordCount = data.length;
+                updateStats();
+                renderSchoolsGrid();
+                if (currentSchool) {
+                    renderTabContent();
+                }
+                if (!elements.statsView.classList.contains('hidden')) {
+                    renderStatsView();
+                }
+            }
+        };
+
+        // Initialize Data SDK
+        async function initDataSdk() {
+            if (window.dataSdk) {
+                const result = await window.dataSdk.init(dataHandler);
+                if (!result.isOk) {
+                    showToast('Gagal menghubungkan ke database', 'error');
+                }
+            }
+        }
+
+        // Utility functions
+        function showToast(message, type = 'success') {
+            elements.toastMessage.textContent = message;
+            elements.toast.className = `fixed bottom-6 right-6 glass rounded-xl px-6 py-4 slide-in z-50 ${type === 'error' ? 'border-red-500' : 'border-emerald-500'} border`;
+            elements.toast.classList.remove('hidden');
+            setTimeout(() => elements.toast.classList.add('hidden'), 3000);
+        }
+
+        function showLoading(show) {
+            elements.loading.classList.toggle('hidden', !show);
+        }
+
+        function getSchoolActivities(schoolId) {
+            return activities.filter(a => a.school_id === schoolId);
+        }
+
+        function getActivityIcon(type) {
+            const icons = { 'kurikulum': '📚', 'pembelajaran': '📖', 'penilaian': '📝', 'suara-murid': '🎤' };
+            return icons[type] || '📋';
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'rencana': '<span class="px-2 py-1 rounded-full text-xs bg-gray-500/30 text-gray-300">📅 Direncanakan</span>',
+                'proses': '<span class="px-2 py-1 rounded-full text-xs bg-amber-500/30 text-amber-300">🔄 Berjalan</span>',
+                'selesai': '<span class="px-2 py-1 rounded-full text-xs bg-emerald-500/30 text-emerald-300">✅ Selesai</span>'
+            };
+            return badges[status] || '';
+        }
+
+        function getPhaseBadge(phase) {
+            const phases = {
+                'dengar': '<span class="px-2 py-1 rounded-full text-xs bg-blue-500/30 text-blue-300">🎧 Dengar</span>',
+                'rancang': '<span class="px-2 py-1 rounded-full text-xs bg-emerald-500/30 text-emerald-300">✏️ Rancang</span>',
+                'laksana': '<span class="px-2 py-1 rounded-full text-xs bg-amber-500/30 text-amber-300">🚀 Laksana</span>',
+                'refleksi': '<span class="px-2 py-1 rounded-full text-xs bg-pink-500/30 text-pink-300">🔍 Refleksi</span>'
+            };
+            return phases[phase] || '';
+        }
+
+        // Update stats
+        function updateStats() {
+            elements.totalActivities.textContent = activities.length;
+            elements.completedCount.textContent = activities.filter(a => a.status === 'selesai').length;
+        }
+
+        // Render schools grid
+        function renderSchoolsGrid() {
+            elements.schoolsGrid.innerHTML = schoolsData.map(school => {
+                const schoolActivities = getSchoolActivities(school.id);
+                const completed = schoolActivities.filter(a => a.status === 'selesai').length;
+                const inProgress = schoolActivities.filter(a => a.status === 'proses').length;
+                
+                return `
+                    <div class="glass rounded-xl p-5 card-hover cursor-pointer" data-school-id="${school.id}">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${school.color} flex items-center justify-center text-2xl">${school.icon}</div>
+                            <span class="px-2 py-1 rounded-full text-xs glass">${school.level}</span>
+                        </div>
+                        <h4 class="font-bold mb-2">${school.name}</h4>
+                        <div class="flex items-center gap-4 text-sm text-gray-400">
+                            <span class="flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                ${completed} selesai
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 pulse-dot"></span>
+                                ${inProgress} berjalan
+                            </span>
+                        </div>
+                        <div class="mt-3 h-1 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-emerald-500 to-cyan-500 transition-all duration-500" style="width: ${schoolActivities.length > 0 ? (completed / schoolActivities.length * 100) : 0}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers
+            document.querySelectorAll('[data-school-id]').forEach(el => {
+                el.addEventListener('click', () => openSchool(el.dataset.schoolId));
+            });
+        }
+
+        // Open school detail
+        function openSchool(schoolId) {
+            currentSchool = schoolsData.find(s => s.id === schoolId);
+            if (!currentSchool) return;
+
+            elements.homeView.classList.add('hidden');
+            elements.statsView.classList.add('hidden');
+            elements.schoolView.classList.remove('hidden');
+
+            renderSchoolHeader();
+            renderTabContent();
+        }
+
+        // Render school header
+        function renderSchoolHeader() {
+            const schoolActivities = getSchoolActivities(currentSchool.id);
+            const completed = schoolActivities.filter(a => a.status === 'selesai').length;
+            
+            elements.schoolHeader.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br ${currentSchool.color} flex items-center justify-center text-3xl">${currentSchool.icon}</div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h2 class="text-2xl font-bold">${currentSchool.name}</h2>
+                            <span class="px-2 py-1 rounded-full text-xs glass">${currentSchool.level}</span>
+                        </div>
+                        <p class="text-gray-400">Pendampingan Potong Kompas Kelas • Co-Design</p>
+                    </div>
+                    <button id="btn-add-activity" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 font-medium hover:opacity-90 transition flex items-center gap-2">
+                        <span>+</span> Tambah Kegiatan
+                    </button>
+                </div>
+                <div class="grid grid-cols-4 gap-4 mt-6">
+                    <div class="text-center p-3 rounded-xl bg-white/5">
+                        <p class="text-2xl font-bold text-blue-400">${schoolActivities.filter(a => a.type === 'kurikulum').length}</p>
+                        <p class="text-xs text-gray-400">Kurikulum</p>
+                    </div>
+                    <div class="text-center p-3 rounded-xl bg-white/5">
+                        <p class="text-2xl font-bold text-emerald-400">${schoolActivities.filter(a => a.type === 'pembelajaran').length}</p>
+                        <p class="text-xs text-gray-400">Pembelajaran</p>
+                    </div>
+                    <div class="text-center p-3 rounded-xl bg-white/5">
+                        <p class="text-2xl font-bold text-amber-400">${schoolActivities.filter(a => a.type === 'penilaian').length}</p>
+                        <p class="text-xs text-gray-400">Penilaian</p>
+                    </div>
+                    <div class="text-center p-3 rounded-xl bg-white/5">
+                        <p class="text-2xl font-bold text-pink-400">${schoolActivities.filter(a => a.type === 'suara-murid').length}</p>
+                        <p class="text-xs text-gray-400">Suara Murid</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('btn-add-activity').addEventListener('click', () => openModal());
+        }
+
+        // Render tab content
+        function renderTabContent() {
+            const schoolActivities = getSchoolActivities(currentSchool.id);
+            let filteredActivities = schoolActivities;
+            
+            if (currentTab !== 'activities') {
+                filteredActivities = schoolActivities.filter(a => a.type === currentTab);
+            }
+
+            if (filteredActivities.length === 0) {
+                elements.tabContent.innerHTML = `
+                    <div class="glass rounded-xl p-12 text-center">
+                        <div class="text-6xl mb-4">📭</div>
+                        <h4 class="text-xl font-bold mb-2">Belum Ada Kegiatan</h4>
+                        <p class="text-gray-400 mb-6">Mulai tambahkan kegiatan pendampingan untuk sekolah ini</p>
+                        <button id="btn-add-first" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 font-medium hover:opacity-90 transition">
+                            + Tambah Kegiatan Pertama
+                        </button>
+                    </div>
+                `;
+                document.getElementById('btn-add-first')?.addEventListener('click', () => openModal());
+                return;
+            }
+
+            elements.tabContent.innerHTML = `
+                <div class="space-y-4">
+                    ${filteredActivities.map(activity => `
+                        <div class="glass rounded-xl p-5 card-hover" data-activity-id="${activity.__backendId}">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-xl">${getActivityIcon(activity.type)}</div>
+                                    <div>
+                                        <h4 class="font-bold mb-1">${activity.title}</h4>
+                                        <p class="text-sm text-gray-400 mb-2">${activity.description || 'Tidak ada deskripsi'}</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${getStatusBadge(activity.status)}
+                                            ${getPhaseBadge(activity.phase)}
+                                        </div>
+                                        ${activity.student_voice ? `
+                                            <div class="mt-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                                                <p class="text-xs text-emerald-400 font-medium mb-1">🎤 Suara Murid:</p>
+                                                <p class="text-sm text-gray-300">"${activity.student_voice}"</p>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="btn-edit w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center" title="Edit">✏️</button>
+                                    <button class="btn-delete w-8 h-8 rounded-lg hover:bg-red-500/20 flex items-center justify-center text-red-400" title="Hapus">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Add event handlers
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const activityId = btn.closest('[data-activity-id]').dataset.activityId;
+                    const activity = activities.find(a => a.__backendId === activityId);
+                    if (activity) openModal(activity);
+                });
+            });
+
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const card = btn.closest('[data-activity-id]');
+                    const activityId = card.dataset.activityId;
+                    
+                    // Inline confirmation
+                    btn.innerHTML = '⏳';
+                    btn.disabled = true;
+                    
+                    const activity = activities.find(a => a.__backendId === activityId);
+                    if (activity) {
+                        showLoading(true);
+                        const result = await window.dataSdk.delete(activity);
+                        showLoading(false);
+                        
+                        if (result.isOk) {
+                            showToast('Kegiatan berhasil dihapus');
+                        } else {
+                            showToast('Gagal menghapus kegiatan', 'error');
+                            btn.innerHTML = '🗑️';
+                            btn.disabled = false;
+                        }
+                    }
+                });
+            });
+        }
+
+        // Render stats view
+        function renderStatsView() {
+            const phaseStats = {
+                dengar: activities.filter(a => a.phase === 'dengar').length,
+                rancang: activities.filter(a => a.phase === 'rancang').length,
+                laksana: activities.filter(a => a.phase === 'laksana').length,
+                refleksi: activities.filter(a => a.phase === 'refleksi').length
+            };
+
+            const typeStats = {
+                kurikulum: activities.filter(a => a.type === 'kurikulum').length,
+                pembelajaran: activities.filter(a => a.type === 'pembelajaran').length,
+                penilaian: activities.filter(a => a.type === 'penilaian').length,
+                'suara-murid': activities.filter(a => a.type === 'suara-murid').length
+            };
+
+            elements.statsContent.innerHTML = `
+                <div class="glass rounded-xl p-6">
+                    <h4 class="font-bold mb-4 flex items-center gap-2">🔄 Distribusi Fase Co-Design</h4>
+                    <div class="space-y-3">
+                        ${Object.entries(phaseStats).map(([phase, count]) => {
+                            const max = Math.max(...Object.values(phaseStats), 1);
+                            const colors = { dengar: 'bg-blue-500', rancang: 'bg-emerald-500', laksana: 'bg-amber-500', refleksi: 'bg-pink-500' };
+                            return `
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="capitalize">${phase}</span>
+                                        <span>${count}</span>
+                                    </div>
+                                    <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                        <div class="h-full ${colors[phase]} transition-all duration-500" style="width: ${(count / max * 100)}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="glass rounded-xl p-6">
+                    <h4 class="font-bold mb-4 flex items-center gap-2">📊 Distribusi Jenis Kegiatan</h4>
+                    <div class="space-y-3">
+                        ${Object.entries(typeStats).map(([type, count]) => {
+                            const max = Math.max(...Object.values(typeStats), 1);
+                            const colors = { kurikulum: 'bg-blue-500', pembelajaran: 'bg-emerald-500', penilaian: 'bg-amber-500', 'suara-murid': 'bg-pink-500' };
+                            const labels = { kurikulum: 'Kurikulum', pembelajaran: 'Pembelajaran', penilaian: 'Penilaian', 'suara-murid': 'Suara Murid' };
+                            return `
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>${labels[type]}</span>
+                                        <span>${count}</span>
+                                    </div>
+                                    <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                        <div class="h-full ${colors[type]} transition-all duration-500" style="width: ${(count / max * 100)}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="glass rounded-xl p-6 md:col-span-2">
+                    <h4 class="font-bold mb-4 flex items-center gap-2">🏫 Progress Per Sekolah</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        ${schoolsData.map(school => {
+                            const schoolActivities = getSchoolActivities(school.id);
+                            const completed = schoolActivities.filter(a => a.status === 'selesai').length;
+                            const progress = schoolActivities.length > 0 ? Math.round(completed / schoolActivities.length * 100) : 0;
+                            return `
+                                <div class="text-center p-3 rounded-xl bg-white/5">
+                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br ${school.color} flex items-center justify-center mx-auto mb-2">${school.icon}</div>
+                                    <p class="text-xs text-gray-400 truncate">${school.name.split(' ').slice(0, 2).join(' ')}</p>
+                                    <p class="text-lg font-bold">${progress}%</p>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Modal functions
+        function openModal(activity = null) {
+            isEditing = !!activity;
+            document.getElementById('modal-title').textContent = isEditing ? 'Edit Kegiatan' : 'Tambah Kegiatan';
+            
+            document.getElementById('form-school-id').value = currentSchool.id;
+            document.getElementById('form-activity-id').value = activity?.__backendId || '';
+            document.getElementById('form-type').value = activity?.type || 'kurikulum';
+            document.getElementById('form-title').value = activity?.title || '';
+            document.getElementById('form-description').value = activity?.description || '';
+            document.getElementById('form-student-voice').value = activity?.student_voice || '';
+            document.getElementById('form-phase').value = activity?.phase || 'dengar';
+            document.getElementById('form-status').value = activity?.status || 'rencana';
+            
+            elements.modalOverlay.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            elements.modalOverlay.classList.add('hidden');
+            elements.activityForm.reset();
+            isEditing = false;
+        }
+
+        // Form submission
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!isEditing && currentRecordCount >= 999) {
+                showToast('Batas maksimum 999 kegiatan telah tercapai. Hapus beberapa kegiatan terlebih dahulu.', 'error');
+                return;
+            }
+
+            const formData = {
+                school_id: document.getElementById('form-school-id').value,
+                type: document.getElementById('form-type').value,
+                title: document.getElementById('form-title').value,
+                description: document.getElementById('form-description').value,
+                student_voice: document.getElementById('form-student-voice').value,
+                phase: document.getElementById('form-phase').value,
+                status: document.getElementById('form-status').value,
+                updated_at: new Date().toISOString()
+            };
+
+            showLoading(true);
+            document.getElementById('btn-submit').disabled = true;
+
+            try {
+                if (isEditing) {
+                    const activityId = document.getElementById('form-activity-id').value;
+                    const existingActivity = activities.find(a => a.__backendId === activityId);
+                    if (existingActivity) {
+                        const result = await window.dataSdk.update({ ...existingActivity, ...formData });
+                        if (result.isOk) {
+                            showToast('Kegiatan berhasil diperbarui');
+                            closeModal();
+                        } else {
+                            showToast('Gagal memperbarui kegiatan', 'error');
+                        }
+                    }
+                } else {
+                    formData.id = 'act-' + Date.now();
+                    formData.created_at = new Date().toISOString();
+                    const result = await window.dataSdk.create(formData);
+                    if (result.isOk) {
+                        showToast('Kegiatan berhasil ditambahkan');
+                        closeModal();
+                    } else {
+                        showToast('Gagal menambahkan kegiatan', 'error');
+                    }
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan', 'error');
+            } finally {
+                showLoading(false);
+                document.getElementById('btn-submit').disabled = false;
+            }
+        }
+
+        // Navigation handlers
+        function showHome() {
+            elements.homeView.classList.remove('hidden');
+            elements.schoolView.classList.add('hidden');
+            elements.statsView.classList.add('hidden');
+            currentSchool = null;
+        }
+
+        function showStats() {
+            elements.homeView.classList.add('hidden');
+            elements.schoolView.classList.add('hidden');
+            elements.statsView.classList.remove('hidden');
+            renderStatsView();
+        }
+
+        // Tab handlers
+        function handleTabClick(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-500', 'text-white');
+                btn.classList.add('glass');
+            });
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('bg-emerald-500', 'text-white');
+            document.querySelector(`[data-tab="${tab}"]`).classList.remove('glass');
+            renderTabContent();
+        }
+
+        // Event listeners
+        document.getElementById('btn-home').addEventListener('click', showHome);
+        document.getElementById('btn-stats').addEventListener('click', showStats);
+        document.getElementById('btn-back').addEventListener('click', showHome);
+        document.getElementById('modal-close').addEventListener('click', closeModal);
+        document.getElementById('btn-cancel').addEventListener('click', closeModal);
+        elements.activityForm.addEventListener('submit', handleFormSubmit);
+        elements.modalOverlay.addEventListener('click', (e) => {
+            if (e.target === elements.modalOverlay) closeModal();
+        });
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => handleTabClick(btn.dataset.tab));
+        });
+
+        // Initialize
+        renderSchoolsGrid();
+        initDataSdk();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dafc7629090f91a',t:'MTc3MzI4Njg0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
